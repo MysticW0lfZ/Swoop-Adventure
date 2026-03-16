@@ -25,3 +25,9 @@ gameplay mechanics such as player movement, level interaction, and obstacle navi
 During this project I learned how to implement movement mechanics, work with Unity’s physics system, and structure a project using version 
 control through GitHub. The project helped me better understand
 the process of prototyping gameplay systems and testing mechanics in a playable environment.
+
+## Play the Game
+
+You can play the WebGL build here:
+
+[Play Swoop Adventure](Project%20D/)
