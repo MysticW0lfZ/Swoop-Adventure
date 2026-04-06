@@ -98,3 +98,12 @@ Improve animations
 
 Create additional levels
 
+MVP Development
+
+For the MVP of Swoop’s Adventure, I focused on implementing the core mechanics that define the gameplay experience. The current prototype includes basic player movement, jumping, and a projectile-based attack system. The player can interact with one enemy type that patrols a small section of the level. A health system has been implemented for both the player and the enemy, allowing for a clear win or lose condition. The level is a single playable scene designed to test movement flow and combat interaction.
+
+While developing the MVP, I learned the importance of isolating core mechanics before adding visual polish. Early testing revealed that jump height and attack timing significantly affect gameplay feel. I also improved my understanding of Unity’s physics system and collision handling, particularly when managing player damage and enemy interactions.
+
+One challenge was balancing movement speed and enemy difficulty to ensure the game feels fair but still engaging. Testing the prototype helped identify areas where the controls felt too stiff or too sensitive.
+
+Next steps include refining movement responsiveness, adding basic UI elements such as a health display, improving enemy behavior, and incorporating sound effects. Future iterations will focus on expanding level design and introducing additional enemy types.

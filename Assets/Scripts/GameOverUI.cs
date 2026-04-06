@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class GameOverUI : MonoBehaviour
     public CanvasGroup panelGroup;
     public Button restartButton;
     public Button mainMenuButton;
+    public Button highScoresButton; 
+
+    [Header("Score Submission")]
+    public TMP_InputField playerNameInput;
 
     [Header("Settings")]
     public float fadeDuration = 0.6f;
@@ -23,6 +28,9 @@ public class GameOverUI : MonoBehaviour
         // Hook buttons
         restartButton.onClick.AddListener(RestartLevel);
         mainMenuButton.onClick.AddListener(ReturnToMainMenu);
+
+        if (highScoresButton != null)
+            highScoresButton.onClick.AddListener(OpenHighScores); 
     }
 
     public void ShowGameOver()
@@ -45,14 +53,36 @@ public class GameOverUI : MonoBehaviour
         panelGroup.interactable = true;
     }
 
+    public void SubmitScore()
+    {
+        string playerName = playerNameInput.text;
+
+        if (string.IsNullOrEmpty(playerName))
+            playerName = "Anonymous";
+
+        int score = FindFirstObjectByType<ScoreManager>().GetScore();
+        float time = Time.timeSinceLevelLoad;
+
+        DatabaseManager.Instance.SaveHighScore(playerName, score, time);
+
+        Debug.Log("Score Submitted!");
+    }
+
     void RestartLevel()
     {
-        Scene current = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(current.buildIndex);
+        SubmitScore();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void ReturnToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");   // <-- must match your scene name
+        SubmitScore();
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    void OpenHighScores() 
+    {
+        SubmitScore();
+        SceneManager.LoadScene("HighScores");
     }
 }

@@ -38,4 +38,9 @@ public class ScoreManager : MonoBehaviour
             scoreText.text = "Score: " + score;
         }
     }
+
+    public int GetScore()
+    {
+        return score;
+    }
 }

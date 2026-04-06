@@ -1,5 +1,7 @@
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 public class MainMenuController : MonoBehaviour
 {
@@ -10,12 +12,17 @@ public class MainMenuController : MonoBehaviour
 
     public void OpenOptions()
     {
-        UnityEngine.Debug.Log("Options menu not implemented yet.");
+        Debug.Log("Options menu not implemented yet.");
+    }
+
+    public void OpenHighScores()
+    {
+        SceneManager.LoadScene("HighScores");
     }
 
     public void QuitGame()
     {
-        UnityEngine.Debug.Log("Quit pressed. This only closes the game in a build.");
-        UnityEngine.Application.Quit();
+        Debug.Log("Quit pressed. This only closes the game in a build.");
+        Application.Quit();
     }
 }
