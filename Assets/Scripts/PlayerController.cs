@@ -7,7 +7,9 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 12f;
 
     [Header("Audio")]
-    public AudioSource jumpSound;   // <-- Jump Sound Effect
+    public AudioSource jumpSound;
+
+    public Animator animator; // Animation reference
 
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -19,20 +21,33 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // A / D or Left / Right arrows
+        // Movement input
         float input = Input.GetAxisRaw("Horizontal");
 
-        // Unity 6 uses linearVelocity
+        // Move character
         Vector2 velocity = rb.linearVelocity;
         velocity.x = input * moveSpeed;
         rb.linearVelocity = velocity;
 
-        // Jump
+        // ANIMATION
+        animator.SetFloat("Speed", Mathf.Abs(input));
+        animator.SetBool("isGrounded", isGrounded);
+
+        // FLIP CHARACTER
+        if (input > 0)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        else if (input < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        // JUMP
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
-            // Play jump SFX
             if (jumpSound != null)
                 jumpSound.Play();
         }

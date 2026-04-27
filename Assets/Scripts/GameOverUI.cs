@@ -10,7 +10,7 @@ public class GameOverUI : MonoBehaviour
     public CanvasGroup panelGroup;
     public Button restartButton;
     public Button mainMenuButton;
-    public Button highScoresButton; 
+    public Button highScoresButton;
 
     [Header("Score Submission")]
     public TMP_InputField playerNameInput;
@@ -21,25 +21,34 @@ public class GameOverUI : MonoBehaviour
     void Start()
     {
         // Ensure invisible at start
-        panelGroup.alpha = 0;
-        panelGroup.interactable = false;
-        panelGroup.blocksRaycasts = false;
+        if (panelGroup != null)
+        {
+            panelGroup.alpha = 0;
+            panelGroup.interactable = false;
+            panelGroup.blocksRaycasts = false;
+        }
 
         // Hook buttons
-        restartButton.onClick.AddListener(RestartLevel);
-        mainMenuButton.onClick.AddListener(ReturnToMainMenu);
+        if (restartButton != null)
+            restartButton.onClick.AddListener(RestartLevel);
+
+        if (mainMenuButton != null)
+            mainMenuButton.onClick.AddListener(ReturnToMainMenu);
 
         if (highScoresButton != null)
-            highScoresButton.onClick.AddListener(OpenHighScores); 
+            highScoresButton.onClick.AddListener(OpenHighScores);
     }
 
     public void ShowGameOver()
     {
+        gameObject.SetActive(true); //activate BEFORE coroutine
         StartCoroutine(FadeIn());
     }
 
     IEnumerator FadeIn()
     {
+        if (panelGroup == null) yield break;
+
         panelGroup.blocksRaycasts = true;
 
         float elapsed = 0f;
@@ -50,20 +59,26 @@ public class GameOverUI : MonoBehaviour
             yield return null;
         }
 
+        panelGroup.alpha = 1;
         panelGroup.interactable = true;
     }
 
     public void SubmitScore()
     {
-        string playerName = playerNameInput.text;
+        string playerName = playerNameInput != null ? playerNameInput.text : "";
 
         if (string.IsNullOrEmpty(playerName))
             playerName = "Anonymous";
 
-        int score = FindFirstObjectByType<ScoreManager>().GetScore();
+        int score = 0;
+        ScoreManager sm = FindFirstObjectByType<ScoreManager>();
+        if (sm != null)
+            score = sm.GetScore();
+
         float time = Time.timeSinceLevelLoad;
 
-        DatabaseManager.Instance.SaveHighScore(playerName, score, time);
+        if (DatabaseManager.Instance != null)
+            DatabaseManager.Instance.SaveHighScore(playerName, score, time);
 
         Debug.Log("Score Submitted!");
     }
@@ -80,7 +95,7 @@ public class GameOverUI : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    void OpenHighScores() 
+    void OpenHighScores()
     {
         SubmitScore();
         SceneManager.LoadScene("HighScores");
